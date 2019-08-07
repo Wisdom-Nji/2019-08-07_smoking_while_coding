@@ -1,0 +1,12 @@
+--naive version:
+- check for {} create vectors
+- check for : create map
+
+data types:
+vector<map<string, string>>
+vector<map<string, vector<map<string, string>>
+
+- infinite possibilies for vectors containing maps and vectors
+- everything remains completely on auto format
+
+#let's hack!!
