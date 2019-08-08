@@ -39,6 +39,10 @@ class JSON {
 	string json_string;
 	string name_buffer;
 	JSON* value_buffer_pnt;
+
+
+	void change_state();
+	void write_to_data_head();
 	public:
 		JSON(){
 			this->name_buffer="";
@@ -52,12 +56,6 @@ class JSON {
 		void debug_visualize();
 
 
-		/*JSON operator=(JSON* json_object){
-			cout<<"=Operator called..."<<endl;
-			JSON new_json_object();
-			*json_object=&new_json_object;
-			return *json_object;
-		}*/
 };
 
 void JSON::set_object_write_head(map<string,JSON>& object_index){
@@ -67,8 +65,11 @@ void JSON::set_object_write_head(map<string,JSON>& object_index){
 void JSON::write_object() {
 	string name=this->name_buffer;
 	JSON value=*this->value_buffer_pnt;
-	map<string,JSON>tmp_head{{name,value}};
-	*this->head=tmp_head;
+	map<string,JSON>tmp_head_with_val=*this->head;
+	tmp_head_with_val.insert(make_pair(name,value));
+	*this->head=tmp_head_with_val;
+	this->name_buffer="";
+	this->value_buffer_pnt=new JSON();
 }
 
 void JSON::parse() {
@@ -87,18 +88,52 @@ void JSON::parse() {
 				this->write_object();
 				--this->object_index;
 				break;
+			case ':':
+				cout<<"Working in index="<<this->object_index<<endl;
+				//fit for value buffer
+				this->change_state();
+				break;
+			case ',':
+				cout<<"Working in index="<<this->object_index<<endl;
+				//add more to current map
+				this->write_object();
+				break;
+			default:
+				write_to_data_head(_char);
+				break;
+
 		}
 	}
 }
 
+void JSON::write_to_data_head(char _char){
+	if(this->state_name){
+		this->name_buffer+=_char;
+	}
+	else if(this->state_value) {
+		this->
+	}
+}
+
+void JSON::change_state() {
+	this->state_key=!state_key;
+	this->state_value=!state_value;
+}
+
 void JSON::debug_visualize() {
 	cout<<"main_container_size(): "<<this->main_container.size()<<endl;
+	for(auto map_iterator:this->main_container){
+		map<string,JSON>_map=map_iterator.second;
+		for(auto __map:_map) {
+			cout<<__map.first<<"="<<endl;
+		}
+	}
 }
 
 
 int main(int argc, char** argv) {
 	string sample_json="{\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"}}";
-	string sample_json_1="{{}}";
+	string sample_json_1="{\"name\":\"sherlock wisdom\",new_object:{}}";
 	JSON json(sample_json_1);
 	json.parse();
 	json.debug_visualize();
