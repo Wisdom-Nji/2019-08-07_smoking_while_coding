@@ -40,20 +40,24 @@ class JSON {
 	string name_buffer;
 	JSON* value_buffer_pnt;
 	public:
-		JSON(){}
+		JSON(){
+			this->name_buffer="";
+		}
 		JSON(string json_string):json_string(json_string){
 			this->name_buffer="";
+			this->value_buffer_pnt=new JSON(); 
 		};
 
 		void parse();
 		void debug_visualize();
 
 
-		JSON operator=(JSON* json_object){
+		/*JSON operator=(JSON* json_object){
 			cout<<"=Operator called..."<<endl;
-			cout<<json_object<<endl;
+			JSON new_json_object();
+			*json_object=&new_json_object;
 			return *json_object;
-		}
+		}*/
 };
 
 void JSON::set_object_write_head(map<string,JSON>& object_index){
@@ -62,13 +66,9 @@ void JSON::set_object_write_head(map<string,JSON>& object_index){
 
 void JSON::write_object() {
 	string name=this->name_buffer;
-	//JSON value;
-	*this->value_buffer_pnt=new JSON;
-	cout<<this->value_buffer_pnt<<endl;
 	JSON value=*this->value_buffer_pnt;
 	map<string,JSON>tmp_head{{name,value}};
 	*this->head=tmp_head;
-	cout<<"end writing..."<<endl;
 }
 
 void JSON::parse() {
