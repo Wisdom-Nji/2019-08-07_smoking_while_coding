@@ -82,7 +82,6 @@ auto extract_objects(string sample_string) {
 	multimap<int,map<int,int>>container;
 	vector<Json>previous_last_one_stack;
 	for(int i=0;i<sample_string.size();++i){
-		//static vector<int> previous_last_one_stack;
 		char _char=sample_string[i];
 		//cout<<"["<<_char<<": "<<i<<"]"<<endl;
 		switch(_char){
@@ -101,11 +100,6 @@ auto extract_objects(string sample_string) {
 					 break;
 				 }
 			case '}':{
-					//the last one takes it
-					//shit would hit the fan if empty and .back() called
-					/*map<int,int>new_object{{previous_last_one_stack.back(),i}};
-					container.insert(make_pair(previous_last_one_stack.at(previous_last_one_stack.size()>1?previous_last_one_stack.size()-2:previous_last_one_stack.size()-1), new_object));
-					previous_last_one_stack.pop_back();*/
 
 					 if(previous_last_one_stack.size() > 1){
 						 previous_last_one_stack.at(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
@@ -138,12 +132,6 @@ int main(){
 
 	auto objects = extract_objects(sample_string);
 
-	//closest proximity in linear line
-	/*for(auto parent_object:objects){
-		cout<<parent_object.first<<"| ";
-		for(auto child_object:parent_object.second)
-			cout<<child_object.first<<"="<<child_object.second<<endl;
-	}*/
 
 	for(auto object:objects){
 		object.stat();
