@@ -19,6 +19,7 @@ class Json{
 	map<string,string>name_value_buffer;
 	
 	vector<Json>name_object_buffer, name_array_buffer;
+	vector<string>array_strings;
 
 	enum write_state{NAME,VALUE};
 	write_state WRITE_STATE=NAME;
@@ -53,7 +54,7 @@ void Json::new_data() {
 	}
 	//cout<<"--making new data: "<<this->name_buffer<<"|"<<this->value_buffer<<endl;
 	if(!this->array_value) this->name_value_buffer.insert(make_pair(this->name_buffer,this->value_buffer));
-	else this->name_array_buffer.push_back(this->name_buffer);
+	else this->array_strings.push_back(this->name_buffer);
 	this->name_buffer="";
 	this->value_buffer="";
 	this->WRITE_STATE=NAME;
@@ -84,20 +85,16 @@ void Json::stat(int tab_index=0){
 	
 	if(!this->name_object_buffer.empty()) {
 		cout<<tabs()<<this->standard_name<<"--->[name_object_buffer_size: "<<this->name_object_buffer.size()<<"]"<<endl;
-		short int tab_index=1;
 		for(auto object:this->name_object_buffer){
 			object.stat(++tab_index);
 		}
 	}
 
-	if(!this->name_array_buffer.empty()){
-		cout<<tabs()<<this->standard_name<<"--->[array: "<<this->name_array_buffer.size()<<"]"<<endl;
-		short int tab_index=1;
-		for(auto array:this->name_array_buffer){
-			array.stat(++tab_index);
-		}
-	}
-	//else {}
+	cout<<tabs()<<this->standard_name<<"--->[array: "<<this->name_array_buffer.size()<<"]"<<endl;
+	for(auto array:this->name_array_buffer)
+		array.stat(++tab_index);
+	for(auto _string:this->array_strings)
+		cout<<tabs()<<_string<<endl;
 	cout << endl;
 }
 
@@ -136,6 +133,7 @@ auto extract_objects(string sample_string) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
+				 	 previous_last_one_stack.back().new_data();
 				 	 previous_last_one_stack.at(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
 					 previous_last_one_stack.pop_back();
 					 break;
@@ -195,12 +193,12 @@ auto extract_objects(string sample_string) {
 				 break;
 			case '"':
 				 ignore_special_chars=!ignore_special_chars;
-				 previous_last_one_stack.back().write_data('\\');
+				 //previous_last_one_stack.back().write_data('\\');
 			default:
 				 previous_last_one_stack.back().write_data(_char);
 				 break;
 		}
-		cout << " done]" <<endl;
+		//cout << " done]" <<endl;
 
 	}
 	return previous_last_one_stack;
@@ -210,7 +208,7 @@ auto extract_objects(string sample_string) {
 
 int main(int argc, char** argv){
 	//string sample_string="{name:sherlock,object:{new_object:{},new_object_2:{}}}";
-	string sample_string="{\"array_value\":[],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
+	string sample_string="{\"array_value\":[\"sample_array_string\", 10],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
 
 	auto objects = extract_objects(sample_string);
 
