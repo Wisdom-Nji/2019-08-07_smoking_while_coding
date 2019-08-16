@@ -19,15 +19,24 @@ class Json{
 	
 	vector<Json>name_object_buffer;
 
+	vector<string>array_string_buffer;
+
 	enum write_state{NAME,VALUE};
 	write_state WRITE_STATE=NAME;
+
+	bool is_array=false;
 	public:
 		Json(){}
 		Json(string standard_name):standard_name(standard_name){}
-		void write_head_switch(), new_data(), write_data(char), add_child(Json), stat(int);
+		void write_head_switch(), new_data(), write_data(char), add_child(Json), stat(int), set_is_array(bool);
 		string get_name_buffer() { return this->name_buffer; }
 		string get_standard_name() { return this->standard_name; }
 };
+
+
+void Json::set_is_array(bool is_array) {
+	this->is_array=is_array;
+}
 
 
 void Json::write_head_switch(){
@@ -42,7 +51,8 @@ void Json::new_data() {
 		return;
 	}
 	//cout<<"--making new data: "<<this->name_buffer<<"|"<<this->value_buffer<<endl;
-	this->name_value_buffer.insert(make_pair(this->name_buffer,this->value_buffer));
+	if(!this->is_array) this->name_value_buffer.insert(make_pair(this->name_buffer,this->value_buffer));
+	else this->array_string_buffer.push_back(this->name_buffer);
 	this->name_buffer="";
 	this->value_buffer="";
 	this->WRITE_STATE=NAME;
@@ -54,7 +64,8 @@ void Json::write_data(char _char){
 }
 
 void Json::add_child(Json json_object){
-	this->name_object_buffer.push_back(json_object);
+	if(json_object.is_array()) this->name_array_buffer.push_back(json_object);
+	else this->name_object_buffer.push_back(json_object);
 }
 
 
@@ -84,13 +95,14 @@ void Json::stat(int tab_index=0){
 
 auto extract_objects(string sample_string, int& starter_index=0) {
 	//The solution to the problem lies in recursive loop functions ######### fucking use them
-	vector<Json>previous_last_one_stack;
+	//Thought: Return should send back previous_last_one_stack, if it's got an object it shows and object and if it's got an array, it shows an array
+	vector<Json>previous_last_one_stack; //temporarily stores objects
 	
 	if(starter_index!=0) {
 		Json json;
 		previous_last_one_stack.push_back(json);
 	}
-	vector<Json>previous_last_one_stack_array;
+	vector<Json>previous_last_one_stack_array; //temporarily stores arrays
 	bool ignore_special_chars=false;
 	for(int i=0;i<sample_string.size();++i){
 		char _char=sample_string[i];
@@ -102,11 +114,14 @@ auto extract_objects(string sample_string, int& starter_index=0) {
 						 break;
 					 }
 					 Json json;
-					 previous_last_one_stack_array.push_back(json);
-					 begin_array=true;
+					 json.set_is_array(true);
+					 previous_last_one_stack.push_back(json);
+					 //thought: when new object, begin new object, store the array value.
+					 //write everything to the object when you beg
 					 break;
 				 }
 			case ']':{
+
 					 //TODO: #ElonSays "to nuke mars"... traverse through tree structure using a predictive model as a feedforward function loop
 					 // ["string", "string", 10]
 					 // [{"name":"sherlock", age:10}]
@@ -116,8 +131,7 @@ auto extract_objects(string sample_string, int& starter_index=0) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
-					 previous_last_one_stack_array.pop_back();
-					 begin_array=false;
+				 	 previous_last_one_stack(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
 					 break;
 				 }
 			case '{':{
