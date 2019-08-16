@@ -82,18 +82,40 @@ void Json::stat(int tab_index=0){
 }
 
 
-auto extract_objects(string sample_string) {
+auto extract_objects(string sample_string, int& starter_index=0) {
 	vector<Json>previous_last_one_stack;
+	
+	if(starter_index!=0) {
+		Json json;
+		previous_last_one_stack.push_back(json);
+	}
+	vector<Json>previous_last_one_stack_array;
 	bool ignore_special_chars=false;
 	for(int i=0;i<sample_string.size();++i){
 		char _char=sample_string[i];
 		cout<<"["<<_char<<": "<<i<<" - ";
 		switch(_char){
 			case '[':{
-
+					 if(ignore_special_chars) {
+						 previous_last_one_stack.back().write_data(_char);
+						 break;
+					 }
+					 Json json;
+					 previous_last_one_stack_array.push_back(json);
+					 begin_array=true;
 					 break;
 				 }
 			case ']':{
+					 // ["string", "string", 10]
+					 // [{"name":"sherlock", age:10}]
+					 // [{"name":"sherlock", age:10},{"name":"sherlock", age:10}]
+					 // [{"name":"sherlock", age:10},["string","string","string"]}]
+					 if(ignore_special_chars) {
+						 previous_last_one_stack.back().write_data(_char);
+						 break;
+					 }
+					 previous_last_one_stack_array.pop_back();
+					 begin_array=false;
 					 break;
 				 }
 			case '{':{
