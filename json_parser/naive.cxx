@@ -7,6 +7,7 @@
 #include <set>
 #include <map>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 
@@ -68,6 +69,7 @@ void Json::stat(int tab_index=0){
 		if(!name_value.second.empty()) cout<<tabs()<<name_value.first<<"="<<name_value.second<<endl;
 		else cout<<tabs()<<endl<<name_value.first<<" ---::"<<endl;
 	}
+	
 	if(!this->name_object_buffer.empty()) {
 		cout<<tabs()<<this->standard_name<<"--->[name_object_buffer_size: "<<this->name_object_buffer.size()<<"]"<<endl;
 		short int tab_index=1;
@@ -75,19 +77,25 @@ void Json::stat(int tab_index=0){
 			object.stat(++tab_index);
 		}
 	}
-	else cout << endl;
+	//else {}
+	cout << endl;
 }
 
 
 auto extract_objects(string sample_string) {
-	vector<int>object_start_pnt, object_end_pnt;
-	multimap<int,map<int,int>>container;
 	vector<Json>previous_last_one_stack;
 	bool ignore_special_chars=false;
 	for(int i=0;i<sample_string.size();++i){
 		char _char=sample_string[i];
-		//cout<<"["<<_char<<": "<<i<<" - ";
+		cout<<"["<<_char<<": "<<i<<" - ";
 		switch(_char){
+			case '[':{
+
+					 break;
+				 }
+			case ']':{
+					 break;
+				 }
 			case '{':{
 					 if(ignore_special_chars) {
 						 previous_last_one_stack.back().write_data(_char);
@@ -148,7 +156,7 @@ auto extract_objects(string sample_string) {
 				 previous_last_one_stack.back().write_data(_char);
 				 break;
 		}
-		//cout << " done]" <<endl;
+		cout << " done]" <<endl;
 
 	}
 	return previous_last_one_stack;
@@ -156,7 +164,7 @@ auto extract_objects(string sample_string) {
 
 
 
-int main(){
+int main(int argc, char** argv){
 	//string sample_string="{name:sherlock,object:{new_object:{},new_object_2:{}}}";
 	string sample_string="{\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
 
@@ -166,6 +174,19 @@ int main(){
 	for(auto object:objects){
 		object.stat();
 	}
+
+	/*
+	ifstream read_json_file("sample_json_file.js");
+
+	string json_dump(istreambuf_iterator<char>(read_json_file), (istreambuf_iterator<char>()));
+
+	//cout << json_dump << endl;
+	
+	objects = extract_objects(json_dump);
+
+	for(auto object:objects){
+		object.stat();
+	}*/
 
 	return 0;
 }
