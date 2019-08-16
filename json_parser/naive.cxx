@@ -83,6 +83,7 @@ void Json::stat(int tab_index=0){
 
 
 auto extract_objects(string sample_string, int& starter_index=0) {
+	//The solution to the problem lies in recursive loop functions ######### fucking use them
 	vector<Json>previous_last_one_stack;
 	
 	if(starter_index!=0) {
@@ -106,6 +107,7 @@ auto extract_objects(string sample_string, int& starter_index=0) {
 					 break;
 				 }
 			case ']':{
+					 //TODO: #ElonSays "to nuke mars"... traverse through tree structure using a predictive model as a feedforward function loop
 					 // ["string", "string", 10]
 					 // [{"name":"sherlock", age:10}]
 					 // [{"name":"sherlock", age:10},{"name":"sherlock", age:10}]
