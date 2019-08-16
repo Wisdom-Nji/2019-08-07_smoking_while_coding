@@ -17,25 +17,25 @@ class Json{
 
 	map<string,string>name_value_buffer;
 	
-	vector<Json>name_object_buffer;
-
-	vector<string>array_string_buffer;
+	vector<Json>name_object_buffer, name_array_buffer;
 
 	enum write_state{NAME,VALUE};
 	write_state WRITE_STATE=NAME;
 
-	bool is_array=false;
+	bool array_value=false;
 	public:
 		Json(){}
 		Json(string standard_name):standard_name(standard_name){}
 		void write_head_switch(), new_data(), write_data(char), add_child(Json), stat(int), set_is_array(bool);
 		string get_name_buffer() { return this->name_buffer; }
 		string get_standard_name() { return this->standard_name; }
+
+		bool is_array() { return this->array_value; }
 };
 
 
 void Json::set_is_array(bool is_array) {
-	this->is_array=is_array;
+	this->array_value=is_array;
 }
 
 
@@ -51,8 +51,8 @@ void Json::new_data() {
 		return;
 	}
 	//cout<<"--making new data: "<<this->name_buffer<<"|"<<this->value_buffer<<endl;
-	if(!this->is_array) this->name_value_buffer.insert(make_pair(this->name_buffer,this->value_buffer));
-	else this->array_string_buffer.push_back(this->name_buffer);
+	if(!this->array_value) this->name_value_buffer.insert(make_pair(this->name_buffer,this->value_buffer));
+	else this->name_array_buffer.push_back(this->name_buffer);
 	this->name_buffer="";
 	this->value_buffer="";
 	this->WRITE_STATE=NAME;
@@ -78,7 +78,7 @@ void Json::stat(int tab_index=0){
 	cout<<tabs()<<this->standard_name<<"--->[name_value_buffer_size: "<<this->name_value_buffer.size()<<"]"<<endl;
 	for(auto name_value:this->name_value_buffer){
 		if(!name_value.second.empty()) cout<<tabs()<<name_value.first<<"="<<name_value.second<<endl;
-		else cout<<tabs()<<endl<<name_value.first<<" ---::"<<endl;
+		else cout<<tabs()<<name_value.first<<" ---::"<<endl;
 	}
 	
 	if(!this->name_object_buffer.empty()) {
@@ -88,32 +88,36 @@ void Json::stat(int tab_index=0){
 			object.stat(++tab_index);
 		}
 	}
+
+	if(!this->name_array_buffer.empty()){
+		cout<<tabs()<<this->standard_name<<"--->[array: "<<this->name_array_buffer.size()<<"]"<<endl;
+		short int tab_index=1;
+		for(auto array:this->name_array_buffer){
+			array.stat(++tab_index);
+		}
+	}
 	//else {}
 	cout << endl;
 }
 
 
-auto extract_objects(string sample_string, int& starter_index=0) {
+auto extract_objects(string sample_string) {
 	//The solution to the problem lies in recursive loop functions ######### fucking use them
 	//Thought: Return should send back previous_last_one_stack, if it's got an object it shows and object and if it's got an array, it shows an array
 	vector<Json>previous_last_one_stack; //temporarily stores objects
-	
-	if(starter_index!=0) {
-		Json json;
-		previous_last_one_stack.push_back(json);
-	}
 	vector<Json>previous_last_one_stack_array; //temporarily stores arrays
 	bool ignore_special_chars=false;
 	for(int i=0;i<sample_string.size();++i){
 		char _char=sample_string[i];
-		cout<<"["<<_char<<": "<<i<<" - ";
+		//cout<<"["<<_char<<": "<<i<<" - ";
 		switch(_char){
 			case '[':{
 					 if(ignore_special_chars) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
-					 Json json;
+					 cout<<"Name buffer: "<<previous_last_one_stack.back().get_name_buffer()<<endl;
+					 Json json(previous_last_one_stack.back().get_name_buffer());
 					 json.set_is_array(true);
 					 previous_last_one_stack.push_back(json);
 					 //thought: when new object, begin new object, store the array value.
@@ -131,7 +135,8 @@ auto extract_objects(string sample_string, int& starter_index=0) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
-				 	 previous_last_one_stack(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
+				 	 previous_last_one_stack.at(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
+					 previous_last_one_stack.pop_back();
 					 break;
 				 }
 			case '{':{
@@ -204,7 +209,7 @@ auto extract_objects(string sample_string, int& starter_index=0) {
 
 int main(int argc, char** argv){
 	//string sample_string="{name:sherlock,object:{new_object:{},new_object_2:{}}}";
-	string sample_string="{\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
+	string sample_string="{\"array_value\":[],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
 
 	auto objects = extract_objects(sample_string);
 
