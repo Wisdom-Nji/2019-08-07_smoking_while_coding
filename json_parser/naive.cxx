@@ -211,18 +211,18 @@ auto extract_objects(string sample_string) {
 	return previous_last_one_stack;
 }
 
-
+/*
 
 int main(int argc, char** argv){
 	//string sample_string="{name:sherlock,object:{new_object:{},new_object_2:{}}}";
-	/*string sample_string="{\"array_value\":[\"sample_array_string\", 10],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
+	string sample_string="{\"array_value\":[\"sample_array_string\", 10],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
 
 	auto objects = extract_objects(sample_string);
 
 
 	for(auto object:objects){
 		object.stat();
-	}*/
+	}
 
 	
 	ifstream read_json_file("sample_json_file.js");
@@ -238,4 +238,4 @@ int main(int argc, char** argv){
 	}
 
 	return 0;
-}
+} */
