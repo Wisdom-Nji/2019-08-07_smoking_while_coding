@@ -25,14 +25,16 @@ class Json{
 	write_state WRITE_STATE=NAME;
 
 	bool array_value=false;
+	bool write_state=true;
 	public:
 		Json(){}
 		Json(string standard_name):standard_name(standard_name){}
-		void write_head_switch(), new_data(), write_data(char), add_child(Json), stat(int), set_is_array(bool);
+		void write_head_switch(), new_data(), write_data(char), add_child(Json), stat(int), set_is_array(bool), set_write_state(bool write_state) { this->write_state = write_state; }
 		string get_name_buffer() { return this->name_buffer; }
 		string get_standard_name() { return this->standard_name; }
 
 		bool is_array() { return this->array_value; }
+		bool is_writing() { return this->write_state;}
 };
 
 
@@ -143,7 +145,7 @@ auto extract_objects(string sample_string) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
-					 if(!previous_last_one_stack.empty()) {
+					 if(!previous_last_one_stack.empty() and previous_last_one_stack.back().is_writing()) {
 						 //cout << "name_buffer: " << previous_last_one_stack.back().get_name_buffer();
 						 Json json(previous_last_one_stack.back().get_name_buffer());
 						 //cout << json.get_standard_name() << " -- ";
@@ -163,16 +165,21 @@ auto extract_objects(string sample_string) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
+					 previous_last_one_stack.back().set_write_state(false);
 					 if(previous_last_one_stack.size() > 1){
-						 /*cout<<"[EOO: parent available... |";
-						 cout << previous_last_one_stack.back().get_standard_name() << " -- ";
-						 cout << previous_last_one_stack.back().get_name_buffer() << " -- ";*/
-						 previous_last_one_stack.back().new_data();
-						 previous_last_one_stack.at(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
-						 previous_last_one_stack.pop_back();
+						if(previous_last_one_stack.at(previous_last_one_stack.size() -2).is_writing()) {
+						       	/*cout<<"[EOO: parent available... |";
+							 cout << previous_last_one_stack.back().get_standard_name() << " -- ";
+							 cout << previous_last_one_stack.back().get_name_buffer() << " -- ";*/
+							 previous_last_one_stack.back().new_data();
+							 previous_last_one_stack.at(previous_last_one_stack.size() -2).add_child(previous_last_one_stack.back());
+							 previous_last_one_stack.pop_back();
+						} else {
+							previous_last_one_stack.back().new_data();
+						}
 					 }
 					 else {
-						 previous_last_one_stack.at(previous_last_one_stack.size() -1).new_data();
+						 previous_last_one_stack.back().new_data();
 					 }
 
 					break;
@@ -208,27 +215,27 @@ auto extract_objects(string sample_string) {
 
 int main(int argc, char** argv){
 	//string sample_string="{name:sherlock,object:{new_object:{},new_object_2:{}}}";
-	string sample_string="{\"array_value\":[\"sample_array_string\", 10],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
+	/*string sample_string="{\"array_value\":[\"sample_array_string\", 10],\"nam:{e\" :\"sherlock wisdom\",\"name2\":\"sherlock holmes\",new_object:{\"new_name\":\"new_sherlock_wisdom\"},\"zinal_help\":\"yes I shall help\"}";
 
 	auto objects = extract_objects(sample_string);
 
 
 	for(auto object:objects){
 		object.stat();
-	}
+	}*/
 
-	/*
+	
 	ifstream read_json_file("sample_json_file.js");
 
 	string json_dump(istreambuf_iterator<char>(read_json_file), (istreambuf_iterator<char>()));
 
 	//cout << json_dump << endl;
 	
-	objects = extract_objects(json_dump);
+	auto objects = extract_objects(json_dump);
 
 	for(auto object:objects){
 		object.stat();
-	}*/
+	}
 
 	return 0;
 }
