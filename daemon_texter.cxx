@@ -40,7 +40,9 @@ void clean_up() {
 
 
 void sleep_process(short int sleep_duration=5) {
+	cout <<"[SLEEPING " << sleep_duration << " seconds: " <<flush;
 	std::this_thread::sleep_for(std::chrono::seconds(sleep_duration));
+	cout << "DONE]" << endl;
 }
 
 void write_default_json_file(string filename, string data) {
@@ -109,7 +111,7 @@ void send_sms( auto json_object, int default_buffer_index ) {
 		ofstream write_index( DEFAULT_INDEX_FILE );
 		write_index << i;
 		write_index.close();
-		sleep_process(10);
+		sleep_process(20);
 	}
 	std::remove( DEFAULT_INDEX_FILE.c_str() );
 }
