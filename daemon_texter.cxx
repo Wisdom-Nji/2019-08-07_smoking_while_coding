@@ -20,6 +20,9 @@ using namespace std;
 //	when complete delete state file and delete write file and delete lock file
 //	return to [General]
 //
+//
+
+//TODO: create system folder if not already exist
 
 string ENV_HOME = getenv( "HOME" );
 string LOCK_FILE = ENV_HOME + "/.afsms/def.lock";
@@ -106,25 +109,25 @@ void send_sms( auto json_object, int default_buffer_index ) {
 		ofstream write_index( DEFAULT_INDEX_FILE );
 		write_index << i;
 		write_index.close();
-		sleep_process();
+		sleep_process(10);
 	}
 	std::remove( DEFAULT_INDEX_FILE.c_str() );
 }
 
 
 int main(int argc, char** argv) {
+	bool shown = false;
 	cout<<"[ENV_HOME: " << ENV_HOME <<endl;
 	cout<<"[LOCK_FILE: " << LOCK_FILE << endl;
 	cout<<"[DEFAULT_COPY_BUFFER: " << DEFAULT_COPY_BUFFER << endl;
 	cout<<"[DEFAULT_JSON_SMS_FILE: " << DEFAULT_JSON_SMS_FILE << endl;
 	cout<<"[DEFAULT_INDEX_FILE: " << DEFAULT_INDEX_FILE << endl;
-	//DEFAULT_JSON_SMS_FILE = "../TmpNodeRouting/sample_log_file.js";
-	//LOCK_FILE = "../TmpNodeRouting/afsms.lock";
-	//string HOME = getenv( "HOME" );
-	//cout<<"[PATH_HOME: " << HOME << endl;
+
+
 	while(1) {
 		if( string json_string = read_default_json_file( DEFAULT_JSON_SMS_FILE.c_str() ); !json_string.empty() ){
 			cout<<"[STATE: FOUND JSON FILE]" << endl;
+			shown = false;
 			write_default_json_file( DEFAULT_COPY_BUFFER, json_string );
 			
 			if( !lock_system() ) {}
@@ -143,7 +146,8 @@ int main(int argc, char** argv) {
 			clean_up();
 		}	
 		else {
-			cout<<"[STATE: NO JSON FOUND]" << endl;
+			if(!shown) cout<<"[STATE: NO JSON FOUND]" << endl;
+			shown = true;
 			sleep_process(10);
 		}
 	}

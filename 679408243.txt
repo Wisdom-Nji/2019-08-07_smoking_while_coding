@@ -1,22 +1,180 @@
-Thu Aug 22 23:17:59 2019
-Test New Client with NodeJs
-Thu Aug 22 23:20:08 2019
-Test New Client with NodeJs
-Thu Aug 22 23:20:16 2019
-Test New Client with NodeJs
-Thu Aug 22 23:22:35 2019
-Test New Client with NodeJs
-Thu Aug 22 23:22:43 2019
-Test New Client with NodeJs
-Thu Aug 22 23:22:51 2019
-Test New Client with NodeJs
-Thu Aug 22 23:22:59 2019
-Test New Client with NodeJs
-Thu Aug 22 23:23:07 2019
-Test New Client with NodeJs
-Thu Aug 22 23:23:16 2019
-Test New Client with NodeJs
-Thu Aug 22 23:23:24 2019
-Test New Client with NodeJs
-Thu Aug 22 23:23:33 2019
-Test New Client with NodeJs
+Thu Aug 22 23:34:19 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:34:54 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:35:29 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:39:35 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:40:11 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:40:46 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:46:05 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:46:24 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:46:42 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:47:02 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:48:45 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:49:07 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:49:27 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:49:48 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
+Thu Aug 22 23:50:09 2019
+NewDev1
+2019-08-14
+23634
+AUTOMATED AFKANERD USER
+FCs Test Region, TSV1
+AFB, TB LAMP - Negative
+1234
+Xpert, not done
+1234
+
+Please call 670656041 if you have any questions/Svp appelez 670656041 si vous avez des questions
