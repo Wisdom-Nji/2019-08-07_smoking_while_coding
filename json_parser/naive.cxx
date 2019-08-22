@@ -35,6 +35,8 @@ class Json{
 
 		bool is_array() { return this->array_value; }
 		bool is_writing() { return this->write_state;}
+
+		auto get_key_value(){ return this->name_value_buffer; }
 };
 
 

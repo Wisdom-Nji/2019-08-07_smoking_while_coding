@@ -1,0 +1,1 @@
+{"number":"679408243","service_provider":"MTN","community_id":"test_site_id","message":"Hello world","log_timestamp":"2019-08-22T16:50:46.804Z"}
