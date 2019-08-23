@@ -131,20 +131,14 @@ int main(int argc, char** argv) {
 			cout<<"[STATE: FOUND JSON FILE]" << endl;
 			shown = false;
 			write_default_json_file( DEFAULT_COPY_BUFFER, json_string );
-			
 			if( !lock_system() ) {}
-
 			auto json_object = extract_objects( json_string );
-
 			if(json_object.size() < 1) {
 				sleep_process(10);
 				continue;
 			}
-
 			int default_buffer_index = get_buffer_index();
-
 			send_sms( json_object, default_buffer_index );
-
 			clean_up();
 		}	
 		else {
