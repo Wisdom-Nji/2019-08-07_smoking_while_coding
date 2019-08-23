@@ -104,7 +104,7 @@ void send_sms( auto json_object, int default_buffer_index ) {
 		string number = erase_char( '"', key_value["\"number\""]);
 		string message = key_value["\"message\""];
 		string service_provider = to_upper( erase_char( '"', key_value["\"service_provider\""] ) );
-		string command = "afsms --send --number " + number + " --message " + message + " --group " + service_provider;
+		string command = "afsms --send --class 3 --number " + number + " --message " + message + " --group " + service_provider;
 		//cout<<"[COMMAND: "<< command << endl;
 		system ( command.c_str() );
 
