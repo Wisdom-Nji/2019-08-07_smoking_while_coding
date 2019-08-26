@@ -111,6 +111,7 @@ auto extract_objects(string sample_string) {
 	bool ignore_special_chars=false;
 	for(int i=0;i<sample_string.size();++i){
 		char _char=sample_string[i];
+		if(_char == '\'' and i == 0 || _char == '\'' and i == sample_string.size()-1) continue;
 		//cout<<"["<<_char<<": "<<i<<" - ";
 		switch(_char){
 			case '[':{
@@ -118,7 +119,7 @@ auto extract_objects(string sample_string) {
 						 previous_last_one_stack.back().write_data(_char);
 						 break;
 					 }
-					 cout<<"Name buffer: "<<previous_last_one_stack.back().get_name_buffer()<<endl;
+					 //cout<<"Name buffer: "<<previous_last_one_stack.back().get_name_buffer()<<endl;
 					 Json json(previous_last_one_stack.back().get_name_buffer());
 					 json.set_is_array(true);
 					 previous_last_one_stack.push_back(json);
@@ -204,6 +205,7 @@ auto extract_objects(string sample_string) {
 				 ignore_special_chars=!ignore_special_chars;
 				 //previous_last_one_stack.back().write_data('\\');
 			default:
+				 if(_char == ' ' and !ignore_special_chars) break;
 				 previous_last_one_stack.back().write_data(_char);
 				 break;
 		}

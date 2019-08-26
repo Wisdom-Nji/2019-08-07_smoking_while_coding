@@ -22,11 +22,12 @@ string strVector_to_string(vector<string> _vector) {
 }
 
 
-vector<string> str_split(string _string, char del = ' ') {
+vector<string> str_split(string _string, char del = ' ', bool strict = false) {
 	vector<string> return_value;
 	string temp_string = "";
 	for(auto _char : _string) {
 		if(_char==del) {
+			if(strict and temp_string.empty()) continue;
 			return_value.push_back(temp_string);
 			temp_string="";
 		}
@@ -34,7 +35,7 @@ vector<string> str_split(string _string, char del = ' ') {
 			temp_string+=_char;
 		}
 	}
-	return_value.push_back(temp_string);
+	if(strict and !temp_string.empty()) return_value.push_back(temp_string);
 
 	return return_value;
 }
