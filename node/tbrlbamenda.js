@@ -1,4 +1,17 @@
 const request = require('request');
+const mysql      = require('mysql');
+
+var connection = mysql.createConnection({
+	host     : 'localhost',
+	user     : 'root',
+	password : 'asshole',
+	database : 'deku_logs'
+});
+
+connection.connect(function(err) {
+  // connected! (unless `err` is set)
+});
+
 var terminalArgs = process.argv;
 console.log(terminalArgs);
 if(terminalArgs.length > 2) {
@@ -7,6 +20,25 @@ if(terminalArgs.length > 2) {
 		console.log(`[SCRIPT]: ${information}`);
 		if(information == "--sms_data") {
 			information = terminalArgs[i+1]
+			phonenumber = terminalArgs[i+2]
+			
+			if(typeof phonenumber == "undefined" || typeof information == "undefined") {
+				console.warn("[ERROR]: Information and phonenumber are not present");
+				return;
+			}
+			let data = {
+				type : 'received',
+				message : information,
+				phonenumber : phonenumber
+			}
+
+			let query = "INSERT INTO sms_messages SET ?";
+			connection.query(query, data, function(error, result) {
+				if(error) {
+					//::log
+					console.log(`[ERROR]: ${error}`);
+				}
+			});
 			information = JSON.parse(information);
 			console.log(`[TBRL DATA]: ${information}`);
 			let url = "http://127.0.0.1:8080";

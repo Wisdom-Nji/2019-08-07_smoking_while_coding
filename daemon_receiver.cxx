@@ -53,12 +53,12 @@ string extract_target_id( string message ) {
 	return target_id;
 }
 
-void send_to_script(string target_id, string message) {
+void send_to_script(string target_id, string phonenumber, string message, string timestamp) {
 
 	if(list_of_servers.find( target_id ) != list_of_servers.end() ) { //or something similar
 		cout <<"[STATUS]: found script for target id!" << endl;
 		string path_to_script = list_of_servers[ target_id ];
-		string command = path_to_script + " --sms_data " + message;
+		string command = path_to_script + " --sms_data " + message + " " + phonenumber;
 		//cout << "\t[TERMINAL COMMAND]: " << command << endl;
 		
 		//naive version
@@ -89,7 +89,10 @@ int main(int argc, char** argv) {
 			cout<<"[TEST]: no target_id found!" << endl;
 			return 1;
 		}
-		send_to_script( target_id , message);
+
+		string phonenumber = "652156811";
+		string timestamp = "EPOCH_TIME+1";
+		send_to_script( target_id , phonenumber, message, timestamp );
 	}
 	else {
 		while( 1 ) {
@@ -112,9 +115,13 @@ int main(int argc, char** argv) {
 					auto sms_container = str_split( meta_sms_information , '\n', true);
 					if(sms_container.size() != 3) continue; //1 = number, 2 = message, 3 = timestamp
 
+					string phonenumber = sms_container[0];
+					string message = sms_container[1];
+					string timestamp = sms_container[2];
+
 					string target_id = extract_target_id( sms_container[1] );
 					if(target_id.empty()) continue;
-					send_to_script( target_id , sms_container[1] );
+					send_to_script( target_id , phonenumber, message, timestamp);
 					sleep_process(20);
 				}
 				cout << "[MODEM]: done....\n------" << endl;
