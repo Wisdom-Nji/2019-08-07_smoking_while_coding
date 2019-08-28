@@ -21,6 +21,7 @@ if(terminalArgs.length > 2) {
 		if(information == "--sms_data") {
 			information = terminalArgs[i+1]
 			phonenumber = terminalArgs[i+2]
+			timestamp = terminalArgs[i+3]
 			
 			if(typeof phonenumber == "undefined" || typeof information == "undefined") {
 				console.warn("[ERROR]: Information and phonenumber are not present");
@@ -28,8 +29,10 @@ if(terminalArgs.length > 2) {
 			}
 			let data = {
 				type : 'received',
+				state : 'forwarded',
 				message : information,
-				phonenumber : phonenumber
+				phonenumber : phonenumber,
+				timestamp : timestamp
 			}
 
 			let query = "INSERT INTO sms_messages SET ?";
@@ -81,7 +84,32 @@ if(terminalArgs.length > 2) {
 				}
 			});
 			//res.end();
+			//
+			return;
 		}
+
+		else if( information == "--store_sms" ) {
+			information = terminalArgs[ i+1 ];
+			
+			let phonenumber = terminalArgs[ i+2 ];
+			let timestamp = terminalArgs[ i+3 ];
+			let data = {
+				type : 'received',
+				message : information,
+				phonenumber : phonenumber,
+				timestamp : timestamp
+			}
+
+			let query = "INSERT INTO sms_messages SET ?";
+			connection.query(query, data, function(error, result) {
+				if(error) {
+					//::log
+					console.log(`[ERROR]: ${error}`);
+				}
+			});
+			return;
+		}
+			
 	}
 	return;
 }

@@ -58,7 +58,7 @@ void send_to_script(string target_id, string phonenumber, string message, string
 	if(list_of_servers.find( target_id ) != list_of_servers.end() ) { //or something similar
 		cout <<"[STATUS]: found script for target id!" << endl;
 		string path_to_script = list_of_servers[ target_id ];
-		string command = path_to_script + " --sms_data " + message + " " + phonenumber;
+		string command = path_to_script + " --sms_data " + message + " " + phonenumber + " " + timestamp;
 		//cout << "\t[TERMINAL COMMAND]: " << command << endl;
 		
 		//naive version
@@ -82,6 +82,13 @@ void clean_up( string modem_index, string message_index) {
 }
 
 
+void store_message( string message, string phonenumber, string timestamp ) {
+	
+	string command = "node node/tbrlbamenda.js --store_sms " + message + " " + phonenumber + " " + timestamp;
+	system( command.c_str() ) ;
+}
+
+
 int main(int argc, char** argv) {
 	//check for incoming sms messages
 	//check target id of messages and send to right receipients
@@ -94,15 +101,27 @@ int main(int argc, char** argv) {
 		//string message = (string) argv[1];
 		string message = "'{\"user_id\":\"fd8e4752-1328-45f8-acd9-72091de08926\",\"region_id\":\"\",\"community_id\":\"\",\"name\":\"Rr\",\"age\":\"55\",\"gender\":\"female\",\"date_of_test_request\":\"2019-08-23\",\"address\":\"Vv\",\"telephone1\":\"123456789\",\"telephone2\":\"\",\"art_code\":\"unknown\",\"reason_for_test\":\"presumptive_tb\",\"ward_bed_number\":\"out patient\",\"patient_category\":[\"plh\"],\"specimen_type\":[\"lymph\",{\"other\":\"\"}],\"tb_treatment_history\":{\"tb_treatment_history\":\"new\",\"tb_his_other\":\"\"},\"symptoms\":[\"night_sweats\"],\"requester\":{\"name\":\"\",\"email\":\"\",\"phonenumber\":\"\",\"other\":\"\",\"date\":\"\"},\"mhealth_data_class\":\"new_patient\",\"uuid\":\"eddc4f48-b6a4-4a7a-b325-dc6d9e6cb3ee\",\"mhealth_stored_time\":\"2019-08-23T11:46:55.347Z\",\"id\":22, \"target_id\":\"icftbrlbamenda\"}'";
 		cout << "[TEST|MESSAGE]: " << message << endl;
+		string phonenumber = "652156811";
+		string timestamp = "EPOCH_TIME+1";
 		string target_id = extract_target_id( message );
-		if(target_id.empty()) {
+		if( argc > 2 and (string) argv[2] == "--store_sms" ) {
+			cout<<"[TEST]: storing sms..." << endl;
+
+			store_message (message, phonenumber, timestamp );
+			return 1;
+		}
+		else if(target_id.empty()) {
 			cout<<"[TEST]: no target_id found!" << endl;
+
+			store_message( message, phonenumber, timestamp );
+
 			return 1;
 		}
 
-		string phonenumber = "652156811";
-		string timestamp = "EPOCH_TIME+1";
 		send_to_script( target_id , phonenumber, message, timestamp );
+
+
+		return 0;
 	}
 	else {
 		while( 1 ) {
