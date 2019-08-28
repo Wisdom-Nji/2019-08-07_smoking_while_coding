@@ -48,6 +48,14 @@ elif [ "$1" == "sms" ] ; then
 		message_text=$( mmcli -m $modem_index --sms $message_index | grep text: | grep -oP ": [a-zA-Z0-9\W :_<=?]*" | cut -b 3- )
 		timestamp=$( mmcli -m $modem_index --sms $message_index | grep timestamp: | grep -oP ": [a-zA-Z0-9\W]*" | cut -b 3- ) 
 		echo -e "$message_number\n$message_text\n$timestamp"
+	elif [ "$_type" == "delete" ]; then
+		modem_index=$4
+		message_index=$3
+
+		output=$( mmcli -m $modem_index --messaging-delete-sms=$message_index )
+		if [ ! -z "$output" ]; then
+			echo "$output"
+		fi
 
 	fi
 fi

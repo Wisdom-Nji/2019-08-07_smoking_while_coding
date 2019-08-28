@@ -72,6 +72,16 @@ void send_to_script(string target_id, string phonenumber, string message, string
 }
 
 
+void clean_up( string modem_index, string message_index) {
+	
+	string command = "./scripts/modem_information_extraction.sh sms delete " + message_index + " " + modem_index;
+	string clean_up_output = pipe_terminal( command );
+
+	if(!clean_up_output.empty()) cout << "[STATE]: " << clean_up_output << endl;
+	else cout << "[STATE:ERROR]: failed to cleanup..." << endl;
+}
+
+
 int main(int argc, char** argv) {
 	//check for incoming sms messages
 	//check target id of messages and send to right receipients
@@ -122,6 +132,8 @@ int main(int argc, char** argv) {
 					string target_id = extract_target_id( sms_container[1] );
 					if(target_id.empty()) continue;
 					send_to_script( target_id , phonenumber, message, timestamp);
+
+					clean_up( index, message_index );
 					sleep_process(20);
 				}
 				cout << "[MODEM]: done....\n------" << endl;
